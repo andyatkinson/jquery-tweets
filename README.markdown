@@ -12,9 +12,7 @@ Usage
   1. After the document is ready, select an element on your page and call the `tweets()` function. Add your username.
 
     <pre>
-      $(function() {
-        $('#tweets').tweets({username: 'webandy'});
-      });
+      $('#tweets').tweets({username: 'webandy'});
     </pre>
   
   2. That's it! To use other options include them in the options hash.
