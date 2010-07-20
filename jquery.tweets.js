@@ -4,7 +4,7 @@
 // jquery-tweets is a jquery plugin that fetches a user's tweets (must have public tweets enabled) for display on a website.
 //
 (function($) {
-  $.fn.tweets = function(options) {
+  $.fn.tweets = function(opts) {
     var defaults = {
         username: 'ev',
         cycle: false,
@@ -12,7 +12,7 @@
         relativeTime: true,
         includeHeader: true
       };  
-    var options = $.extend(defaults, options);
+    var options = $.extend(defaults, opts);
     
     function linkTimestamp(text, id) {
       return '<a href="http://twitter.com/'+options.username+'/statuses/'+id+'">'+text+'</a>';
@@ -23,7 +23,7 @@
       time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
       var parsed_date = Date.parse(time_value);
       var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
-      var delta = parseInt((relative_to.getTime() - parsed_date) / 1000);
+      var delta = parseInt(((relative_to.getTime() - parsed_date) / 1000), 10);
       delta = delta + (relative_to.getTimezoneOffset() * 60);
 
       var r = '';
@@ -32,15 +32,15 @@
       } else if(delta < 120) {
         r = 'couple of minutes ago';
       } else if(delta < (45*60)) {
-        r = (parseInt(delta / 60)).toString() + ' minutes ago';
+        r = (parseInt((delta / 60), 10)).toString() + ' minutes ago';
       } else if(delta < (90*60)) {
         r = 'an hour ago';
       } else if(delta < (24*60*60)) {
-        r = '' + (parseInt(delta / 3600)).toString() + ' hours ago';
+        r = '' + (parseInt((delta / 3600), 10)).toString() + ' hours ago';
       } else if(delta < (48*60*60)) {
         r = '1 day ago';
       } else {
-        r = (parseInt(delta / 86400)).toString() + ' days ago';
+        r = (parseInt((delta / 86400), 10)).toString() + ' days ago';
       }
       return r;
     }
@@ -87,5 +87,5 @@
         }, 6000);        
       }
     });
-  }  
+  };
 })(jQuery);

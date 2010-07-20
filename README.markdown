@@ -11,17 +11,13 @@ Usage
 ===
   1. After the document is ready, select an element on your page and call `tweets()` on the selector. Add your username.
 
-    <pre>
-      $(function() {
-        $('#tweets').tweets({username: 'webandy'});
-      });
-    </pre>
+    $(function() {
+      $('#tweets').tweets({username: 'webandy'});
+    });
   
   2. That's it! To use other options include them in the options hash.
   
-    <pre>
-      $('#tweets').tweets({username: 'biz', count: 10, cycle: true, relativeTime: false, includeHeader: false});
-    </pre>
+    `$('#tweets').tweets({username: 'biz', count: 10, cycle: true, relativeTime: false, includeHeader: false});`
 
 Options
 ===
@@ -33,10 +29,13 @@ Style is up to you. A div with the id of "tweets" can be used to scope CSS selec
 
 Where is this used?
 ===
+This script is used on the following websites. The usages are each styled individually.
 
  1. [americas.org](http://americas.org) (originally developed for this site)
  2. [my.trms.com](http://my.trms.com) (customer support website for Tightrope Media Systems)
  3. [trainbrainapp.com](http://trainbrainapp.com) (iPhone app website)
+ 4. [webandy.github.com](http://webandy.github.com) (Personal site)
+ 5. [unshft.com](http://unshft.com) (Coming soon)
  
 MIT License
 ===
