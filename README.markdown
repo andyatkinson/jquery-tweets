@@ -34,8 +34,7 @@ This script is used on the following websites. The usages are each styled indivi
  1. [americas.org](http://americas.org) (originally developed for this site)
  2. [my.trms.com](http://my.trms.com) (customer support website for Tightrope Media Systems)
  3. [trainbrainapp.com](http://trainbrainapp.com) (iPhone app website)
- 4. [webandy.github.com](http://webandy.github.com) (Personal site)
- 5. [unshft.com](http://unshft.com) (Coming soon)
+ 4. [unshft.com](http://unshft.com) (Coming soon)
  
 MIT License
 ===
