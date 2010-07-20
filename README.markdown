@@ -5,19 +5,19 @@ jquery-tweets
 Install
 ===
   1. Download `jquery.tweets.js`
-  2. Include the JavaScript file somewhere `<script type="text/javascript" src="/path/to/javascripts/jquery.tweets.js"></script>`. Ensure the jQuery javascript file is included before jquery-tweets.
+  2. Include the JavaScript file somewhere `<script type="text/javascript" src="/path/to/jquery.tweets.js"></script>`. Ensure `jquery.js` is included before `jquery.tweets.js`.
 
 Usage
 ===
-  1. After the document is ready, select an element on your page and call `tweets()` on the selector. Add your username.
+  1. After the document is ready, select an element and call the `tweets()` function. Add your username.
 
     $(function() {
       $('#tweets').tweets({username: 'webandy'});
     });
   
-  2. That's it! To use other options include them in the options hash.
+  2. That's it! To use other options include them in the options hash. Example options shown below.
   
-    `$('#tweets').tweets({username: 'biz', count: 10, cycle: true, relativeTime: false, includeHeader: false});`
+    $('#tweets').tweets({username: 'biz', count: 10, cycle: true, relativeTime: false, includeHeader: false});
 
 Options
 ===
@@ -25,7 +25,7 @@ By default 5 tweets are displayed as list items without cycling, times are relat
 
 Style
 ===
-Style is up to you. A div with the id of "tweets" can be used to scope CSS selectors to the p and li elements inside it.
+Style is up to you. A div with the id of "tweets" can be used to scope CSS selectors to the p and li elements inside it. Check the examples below to see various ways the tweets are styled to fit the website design.
 
 Where is this used?
 ===
