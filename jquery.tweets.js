@@ -17,11 +17,6 @@ function TweetsPlugin(options) {
     usernameRegex: /(@)(\w+)/g
   };
   
-  self.init();
-};
-
-TweetsPlugin.prototype.init = function() {
-  var self = this;
 };
 
 TweetsPlugin.prototype.autoLinkText = function(text) {

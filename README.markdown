@@ -1,39 +1,37 @@
 jquery-tweets
 ===
-`jquery-tweets` is an jQuery plugin that displays tweets for a given user on a website. URLs and usernames are auto-linked. Relative timestamps are displayed by default. The number of tweets displayed is configurable. Tweets are displayed as a list by default or can be cycled one at a time in a news ticker style (with a crossfade animation).
+`jquery-tweets` displays tweets for a user with a public twitter account. No server code is necessary. Test coverage covers much of the code in this plugin.
 
 Install
 ===
-  1. Download `jquery.tweets.js`
-  2. Include the JavaScript file somewhere `<script type="text/javascript" src="/path/to/jquery.tweets.js"></script>`. Ensure `jquery.js` is included before `jquery.tweets.js`.
-
-Usage
-===
-  1. After the document is ready, select an element and call the `tweets()` function. Add your username.
+  1. Download the `jquery.tweets.js` file and include it on your page. The rest of the files are only needed if you want to test the plugin. The jQuery framework must already be available on the page.
+  2. After the document is ready, select an element and call the `tweets()` function.
 
     $(function() {
       $('#tweets').tweets({username: 'webandy'});
     });
   
-  2. That's it! To use other options include them in the options hash. Example options shown below.
   
-    $('#tweets').tweets({username: 'biz', count: 10, cycle: true, relativeTime: false, includeHeader: false});
+  That's it! To use other options include them in the options hash. Example options are displayed below.
+  
+    $('#tweets').tweets({username: 'biz', count: 10, cycle: true});
 
-Options
+CSS
 ===
-By default 5 tweets are displayed as list items without cycling, times are relative to the current time, and with a header that says "follow this user on twitter" (this can be disabled). Tweet times are displayed MM/DD/YYYY format or relative to now e.g. "About a minute ago".
+CSS is up to the user. Check the examples below to see various ways the tweets are styled to fit the website design.
 
-Style
-===
-Style is up to you. A div with the id of "tweets" can be used to scope CSS selectors to the p and li elements inside it. Check the examples below to see various ways the tweets are styled to fit the website design.
-
-Where is this used?
+Examples
 ===
 This script is used on the following websites. The usages are each styled individually.
 
  1. [americas.org](http://americas.org) (originally developed for this site)
  2. [my.trms.com](http://my.trms.com) (customer support website for Tightrope Media Systems)
  3. [trainbrainapp.com](http://trainbrainapp.com) (iPhone app website)
+ 
+Testing
+===
+The QUnit framework is used to write unit tests against the object that represents the plugin. Additionally, example usages of the plugin are included on the `index.html` page. Load the `index.html` page in your browser to run the unit tests, and see example plugin usage. View the page source to see the markup and script code for each usage.
+
  
 MIT License
 ===
