@@ -3,89 +3,135 @@
 // MIT License, see LICENSE file
 // jquery-tweets is a jquery plugin that fetches a user's tweets (must have public tweets enabled) for display on a website.
 //
-(function($) {
+function TweetsPlugin(options) {
+  if ( !(this instanceof arguments.callee) ) {
+    return new arguments.callee(arguments);
+  }
+  
+  var self = this;
+  
+  self.settings = {
+    username: options.username,
+    baseUrl: 'http://twitter.com',
+    urlRegex: /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/,
+    usernameRegex: /(@)(\w+)/g
+  };
+  
+  self.init();
+};
+
+TweetsPlugin.prototype.init = function() {
+  var self = this;
+};
+
+TweetsPlugin.prototype.autoLinkText = function(text) {
+  var self = this;
+  
+  if ( self.settings.urlRegex.test(text) ) {
+    return text.replace(self.settings.urlRegex, "<a href='$1'>$1</a>");
+  } else {
+    return text;
+  }
+};
+
+TweetsPlugin.prototype.autoLinkUsernames = function(text) {
+  var self = this;
+
+  if ( self.settings.usernameRegex.test(text) ) {
+    return text.replace(self.settings.usernameRegex, "$1<a href='http://twitter.com/$2'>$2</a>");
+  } else {
+    return text;
+  }
+};
+
+TweetsPlugin.prototype.autoLinkTimestamp = function(status_id, date) {
+  var self = this;
+  
+  var date = new Date(date),
+  dateToString = [
+            date.getMonth() + 1,
+            date.getDate(),
+            date.getFullYear()
+          ].join('/');
+  
+  var timestampUrl = [
+                      self.settings.baseUrl,
+                      self.settings.username,
+                      'statuses',
+                      status_id
+                     ].join('/');
+  
+  return "<a href='" + timestampUrl + "'>" + dateToString + "</a>";
+};
+
+(function($) { 
+  
   $.fn.tweets = function(opts) {
     var defaults = {
-        username: 'ev',
-        cycle: false,
-        count: 5,
-        relativeTime: true,
-        includeHeader: true
-      };  
+      username: 'ev',
+      cycle: false,
+      count: 5,
+      animateDuration: 6000
+    };
+    
     var options = $.extend(defaults, opts);
     
-    function linkTimestamp(text, id) {
-      return '<a href="http://twitter.com/'+options.username+'/statuses/'+id+'">'+text+'</a>';
-    }
-    // relative times function credit goes to John Reilly @johnreilly
-    function relativeTime(time_value) {
-      var values = time_value.split(' ');
-      time_value = values[1] + " " + values[2] + ", " + values[5] + " " + values[3];
-      var parsed_date = Date.parse(time_value);
-      var relative_to = (arguments.length > 1) ? arguments[1] : new Date();
-      var delta = parseInt(((relative_to.getTime() - parsed_date) / 1000), 10);
-      delta = delta + (relative_to.getTimezoneOffset() * 60);
-
-      var r = '';
-      if (delta < 60) {
-        r = 'a minute ago';
-      } else if(delta < 120) {
-        r = 'couple of minutes ago';
-      } else if(delta < (45*60)) {
-        r = (parseInt((delta / 60), 10)).toString() + ' minutes ago';
-      } else if(delta < (90*60)) {
-        r = 'an hour ago';
-      } else if(delta < (24*60*60)) {
-        r = '' + (parseInt((delta / 3600), 10)).toString() + ' hours ago';
-      } else if(delta < (48*60*60)) {
-        r = '1 day ago';
-      } else {
-        r = (parseInt((delta / 86400), 10)).toString() + ' days ago';
-      }
-      return r;
-    }
+    return this.each(function(i, container) {
+      var $container = $(container).hide();
+      
+      var plugin = new TweetsPlugin(options);
+      
+      $.getJSON('http://twitter.com/statuses/user_timeline/' + options.username + '.json?count=' + options.count + '&callback=?',
+          function(data) {
+            buildMarkupForDisplay( data );
+          }
+      );
+      
+      displayTweets();
     
-    return this.each(function() {
-      $this = $(this).hide();
-      if(options.includeHeader) {
-        $('<p/>').html('Follow @<a href="http://twitter.com/'+options.username+'">'+options.username+'</a> on <a href="http://twitter.com">twitter</a>').appendTo($this); 
+      // internal plugin functions for this container (inside container loop)
+    
+      function displayTweets() {
+        options.cycle ? cycleTweets() : $container.fadeIn();
       }
-      var tweets = '';
-      $.getJSON('http://twitter.com/statuses/user_timeline/'+options.username+'.json?count='+options.count+'&callback=?',
-       function(data){
-         $.each(data, function(i,item){
-           var tweet = item.text;
-           if(tweet.search(/(https?:\/\/[-\w\.]+:?\/[\w\/_\.]*(\?\S+)?)/) > -1) {
-             tweet = tweet.replace(/(https?:\/\/[-\w\.]+:?\/[\w\/_\.]*(\?\S+)?)/, "<a href='$1'>$1</a>");
-           }
-           if(tweet.search(/@\w+/) > -1) {
-             tweet = tweet.replace(/(@)(\w+)/g, "$1<a href='http://twitter.com/$2'>$2</a>");
-           }
-           var date = new Date(item.created_at);
-           date = (date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear();
-           var href = 'http://twitter.com/'+options.username+'/statuses/'+item.id;
-           
-           var link = options.relativeTime ? linkTimestamp(relativeTime(item.created_at), item.id) : linkTimestamp(date, item.id);
-           tweets += '<li>'+tweet+' '+'<span class="created_at">' +link+ '</span></li>';
-        });
-      $('<ul/>').html(tweets).appendTo($this);
-      options.cycle ? cycle() : $this.fadeIn();
-      });
-      function cycle() {
-        $this.show();
-        $this.find('ul > li').hide();
-        $this.find('ul > li:first').fadeIn();
+    
+      function buildMarkupForDisplay( data ) {
+        var tweetsHtml = '';
+        $.each(data, function(i,item) {
+           var text = item.text,
+               text = plugin.autoLinkText( text ),
+               text = plugin.autoLinkUsernames( text ),
+               timestamp = plugin.autoLinkTimestamp( item.id, item.created_at );
+       
+           var created_at = $('<span />').addClass('created_at').text(timestamp);
+           var tweetHtml = $('<li/>').append(text).append(created_at);
+         
+           var tweetHtml = '<li>' + text + '<span class="created_at">' + timestamp + '</span></li>';
+
+           tweetsHtml += tweetHtml;
+         });
+    
+        $('<ul/>').html( tweetsHtml ).appendTo( $container );
+      }
+    
+      function cycleTweets() {
+        $container.show();
+        $container.find('ul > li').hide();
+        $container.find('ul > li:first').fadeIn();
         var i = 1;
         setInterval(function() {
-          var items = $this.find('li');
+          var items = $container.find('li');
           items.hide();
           items.eq(i).fadeIn();
           if(i == items.length) {
-            $this.find('ul > li:first').fadeIn();
+            $container.find('ul > li:first').fadeIn();
             i = 1;
           } else { i++; }
-        }, 6000);        
+        }, options.animateDuration);
       }
-    });
-  };
+
+    }); // End $.each() loop
+  }; // End $.fn.tweets
+  
+  
 })(jQuery);
