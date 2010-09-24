@@ -1,0 +1,61 @@
+.example {
+  background-color:#f0f0f0;
+  float:left;
+  margin:50px;
+  padding:20px;
+  width:400px;
+}
+
+/* START STYLED EXAMPLE */
+.example.styled {
+  background-color:#192032;
+  border-radius:4px;
+  -moz-border-radius:4px;
+  -webkit-border-radius:4px;
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
+  -moz-box-shadow:0 0 10px rgba(0,0,0,0.5);
+  -webkit-box-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+.example.styled a {
+  color:#222;
+}
+.example.styled h1 {
+  color:#4b3620;
+  font-size:14px;
+  line-height:16px;
+  font-family:"Lucida Grande", serif;
+  text-shadow:0 1px 0 #000;
+}
+.example.styled h1 a {
+  color:#4b3620;
+}
+.example.styled ul {
+  padding:0;
+}
+.example.styled ul li {
+  color:#fff;
+  font-size:15px;
+  font-family:Georgia, serif;
+  line-height:19px;
+  list-style-type:none;
+  padding:4px 0;
+  text-shadow:0 1px 0 #000;
+}
+.example.styled ul li span.created_at {
+  margin-left:4px;
+}
+.example.styled ul li span.created_at a {
+  color:#005D2B;
+  font-size:12px;
+  font-style:italic;
+}
+/* END EXAMPLE */
+
+
+
+
+
+/* Hide the #testing elements used by the Qunit tests */
+#testing, #testing ul {
+  display:none;
+}

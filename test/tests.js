@@ -1,31 +1,30 @@
-module("Object initialization");
+function init(settings) {
+	return $('#testing').tweets(settings)
+}
 
-var plugin = new TweetsPlugin({username: 'webandy'});
-
-test("init should create TweetsPlugin object", function() {
-  ok(typeof plugin === 'object');
+$(function() {
+  
+  test("Defaults and options", function() {
+    init();
+    equal($.tweets._defaults.username, "ev", "placeholder username");
+    equal($.tweets._defaults.cycle, false, "do not cycle by default");
+    equal($.tweets._defaults.count, 5, "show 5 tweets by default");
+    equal($.tweets._defaults.animateDuration, 6000, "cycle tweet every 6 seconds");
+  });
+  
+  test("hyperlinking tweet plain text", function() {
+    init();
+    equal($.tweets._autoLinkText("you should visit twitter to see updates"),
+          "you should visit twitter to see updates", "do nothing if text contains no links");
+    equal($.tweets._autoLinkText("you should visit http://twitter.com to see updates"),
+          "you should visit <a href='http://twitter.com'>http://twitter.com</a> to see updates", 
+          "replace links with hyperlinked text");
+    equal($.tweets._autoLinkUsernames("tweeted by @webandy"),
+          "tweeted by @<a href='http://twitter.com/webandy'>webandy</a>",
+          "replace twitter usernames with hyperlinked text");
+    equal($.tweets._autoLinkTimestamp(22204851106, '08/26/2010', 'webandy'),
+          "<a href='http://twitter.com/webandy/statuses/22204851106'>8/26/2010</a>",
+          "create formatted and hyperlinked text from timestamp");
+  });
+  
 });
-test("init should set the username on the returned object", function() {
-  equals(plugin.settings.username, "webandy");
-});
-
-module("URL detection, replacement, auto-linking");
-test("auto link should leave text without hyperlinks untouched", function() {
-  equals(plugin.autoLinkText("you should visit twitter to see updates"),
-    "you should visit twitter to see updates");
-});
-test("should replace links with hyperlinked text", function() {
-  equals(plugin.autoLinkText("you should visit http://twitter.com to see updates"),
-    "you should visit <a href='http://twitter.com'>http://twitter.com</a> to see updates");
-});
-test("detect twitter usernames and link them", function() {
-  equals(plugin.autoLinkUsernames("tweeted by @webandy"),
-    "tweeted by @<a href='http://twitter.com/webandy'>webandy</a>");
-});
-test("create formatted link from timestamp", function() {
-  // link should go to tweet, link text should be U.S.-style formatted date MM/DD/YYYY
-  status_id = 22204851106
-  created_at = '08/26/2010'
-  equals(plugin.autoLinkTimestamp(status_id, created_at),
-    "<a href='http://twitter.com/webandy/statuses/22204851106'>8/26/2010</a>")
-})

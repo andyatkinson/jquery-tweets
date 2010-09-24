@@ -4,8 +4,8 @@ jquery-tweets
 
 Install
 ===
-  1. Download the `jquery.tweets.js` file and include it on your page. The rest of the files are only needed if you want to test the plugin. The jQuery framework must already be available on the page.
-  2. After the document is ready, select an element and call the `tweets()` function.
+ 1. Download the `jquery.tweets.js` file and include it on your page. The rest of the files are only needed if you want to test the plugin. The jQuery framework must already be available on the page.
+ 2. After the document is ready, select an element and call the `tweets()` function.
 
     $(function() {
       $('#tweets').tweets({username: 'webandy'});
@@ -18,7 +18,7 @@ Install
 
 CSS
 ===
-CSS is up to the user. Check the examples below to see various ways the tweets are styled to fit the website design.
+CSS is up to the user. Check the examples below to see various ways the tweets are styled to fit the website design. Check the example page to show one styled tweets area, feel free to use any or part of the CSS for your project.
 
 Examples
 ===
@@ -30,7 +30,11 @@ This script is used on the following websites. The usages are each styled indivi
  
 Testing
 ===
-The QUnit framework is used to write unit tests against the object that represents the plugin. Additionally, example usages of the plugin are included on the `index.html` page. Load the `index.html` page in your browser to run the unit tests, and see example plugin usage. View the page source to see the markup and script code for each usage.
+The QUnit framework is used to unit tests that cover some of the functionality of the internal methods. Additionally, example usages of the plugin are included on the `index.html` page in the test directory that demonstrate the plugin being used in the browser. Load the `index.html` page in your browser to run the unit tests, and see example plugin usage. View the page source to see the markup and script code for each usage.
+
+Thanks
+===
+This plugin follows the pattern outlined in this excellent blog post titled [A jQuery Plugin Framework](http://keith-wood.name/pluginFramework.html). 
 
  
 MIT License
