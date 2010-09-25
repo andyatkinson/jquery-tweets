@@ -36,6 +36,8 @@ Thanks
 ===
 This plugin follows the pattern outlined in this excellent blog post titled [A jQuery Plugin Framework](http://keith-wood.name/pluginFramework.html). 
 
+This plugin had been added to the [jQuery plugins directory here](http://plugins.jquery.com/project/webandy-jquery-tweets).
+
  
 MIT License
 ===
