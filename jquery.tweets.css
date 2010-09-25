@@ -1,9 +1,9 @@
 .example {
   background-color:#f0f0f0;
   float:left;
-  margin:50px;
   padding:20px;
-  width:400px;
+  margin:20px;
+  width:300px;
 }
 
 /* START STYLED EXAMPLE */
@@ -41,11 +41,14 @@
   padding:4px 0;
   text-shadow:0 1px 0 #000;
 }
+.example.styled ul li a {
+  color:#888;
+}
 .example.styled ul li span.created_at {
   margin-left:4px;
 }
 .example.styled ul li span.created_at a {
-  color:#005D2B;
+  color:#888;
   font-size:12px;
   font-style:italic;
 }

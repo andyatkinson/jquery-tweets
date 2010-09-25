@@ -1,7 +1,9 @@
-/*
-  'jquery-tweets' Copyright (c) 2009 Andy Atkinson http://webandy.com
-  MIT License, see LICENSE file
-  jquery-tweets is a jquery plugin that fetches a user's tweets (must have public tweets enabled) for display on a website.
+/**
+* 'jquery-tweets' Copyright (c) 2009 Andy Atkinson http://webandy.com
+* jquery-tweets is a jquery plugin that fetches a user's tweets (must have public tweets enabled) 
+* for display on a website.
+* 
+* MIT License, see LICENSE file
 */
 (function($) { 
   
@@ -19,9 +21,8 @@ function TweetsPlugin() {
 $.extend(TweetsPlugin.prototype, {
   
   markerClassName: 'hasTweetsPlugin',
-  
-  /* settings that are not unique to an instance */
   baseUrl: 'http://twitter.com',
+  api_method: 'http://twitter.com/statuses/user_timeline/',
   urlRegex: /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/,
   usernameRegex: /(@)(\w+)/g,
   
@@ -29,7 +30,6 @@ $.extend(TweetsPlugin.prototype, {
     $.extend(this._defaults, settings || {});
     return this;
   },
-  
   
   /* Attach the tweets plugin functionality to an element.
 	   @param  target    (element) the html element on the page
@@ -48,20 +48,24 @@ $.extend(TweetsPlugin.prototype, {
     this._fetchTwitterData(target, settings);
   },
   
+  /* Pull JSON from the twitter API for a user
+	   @param  element    (element) the html element on the page
+	   @param  settings  (object) the custom options for this instance */
   _fetchTwitterData: function(element, settings) {
     var instance = $.data(element[0], PROP_NAME);
     $.extend(instance.settings, settings);
     var self = this;
-    $.getJSON('http://twitter.com/statuses/user_timeline/' + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?',
+    $.getJSON(this.api_method + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?',
         function(data) {
           self._buildMarkupFromData(element, data);
         }
     );
   },
   
-  /*
-    Responds to custom event when data is ready
-  */
+  /* Convert JSON data returned from twitter API into markup to insert 
+     into page
+	   @param  element    (element) the html element on the page
+	   @param  settings  (object) the custom options for this instance */
   _buildMarkupFromData: function(element, data) {
     var self = this;
     var tweetsHTML = '';
@@ -77,13 +81,12 @@ $.extend(TweetsPlugin.prototype, {
        tweetsHTML += tweetHtml;
     });
 
-    // append the markup to the target
     $('<ul/>').html( tweetsHTML ).appendTo( element );
-    
-    // display the target
     this._displayTweets(element);
   },
   
+  /* Convert links to hyperlinked text
+	   @param  text  (string) original plain text */
   _autoLinkText: function(text) {
     if (this.urlRegex.test(text)) {
       return text.replace(this.urlRegex, "<a href='$1'>$1</a>");
@@ -92,6 +95,8 @@ $.extend(TweetsPlugin.prototype, {
     }
   },
   
+  /* Convert twitter usernames to hyperlinked usernames
+	   @param  text  (string) original plain text */
   _autoLinkUsernames: function(text) {
     if (this.usernameRegex.test(text)) {
       return text.replace(this.usernameRegex, "$1<a href='http://twitter.com/$2'>$2</a>");
@@ -100,6 +105,10 @@ $.extend(TweetsPlugin.prototype, {
     }
   },
   
+  /* Build link back to tweet permalink from parts
+	   @param  status_id    (number) twitter status integer
+	   @param  date    (date) date when tweet was made
+	   @param  screen_name  (string) twitter username */
   _autoLinkTimestamp: function(status_id, date, screen_name) {
     var d = new Date(date),
     dateString = [
@@ -118,11 +127,15 @@ $.extend(TweetsPlugin.prototype, {
     return "<a href='" + timestampUrl + "'>" + dateString + "</a>";
   },
   
+  /* Decide to either cycle or display tweets markup
+	   @param  element  (element) element containing tweets */
   _displayTweets: function(element) {
     var instance = $.data(element[0], PROP_NAME);
     instance.settings.cycle ? this._cycleTweets(element) : element.fadeIn();
   },
   
+  /* Show one tweet for the animateDurection, then replace it with another
+	   @param  element  (element) element containing tweets */
   _cycleTweets: function(element) {
     var instance = $.data(element[0], PROP_NAME);
     element.show();
@@ -140,7 +153,7 @@ $.extend(TweetsPlugin.prototype, {
     }, instance.settings.animateDuration);
   }
 
-}); // end $.extend()
+});
 
 // The list of commands that return values and don't permit chaining
 var getters = ['settings'];
