@@ -25,6 +25,8 @@ $.extend(TweetsPlugin.prototype, {
   api_method: 'http://twitter.com/statuses/user_timeline/',
   urlRegex: /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/,
   usernameRegex: /(@)(\w+)/g,
+  requestUrl: "",
+  responseData: null,
   
   setDefaults: function(settings) {
     $.extend(this._defaults, settings || {});
@@ -32,8 +34,8 @@ $.extend(TweetsPlugin.prototype, {
   },
   
   /* Attach the tweets plugin functionality to an element.
-	   @param  target    (element) the html element on the page
-	   @param  settings  (object) the custom options for this instance */
+    @param  target    (element) the html element on the page
+    @param  settings  (object) the custom options for this instance */
   _attachTweetsPlugin: function(target, settings) {
     target = $(target);
     if (target.hasClass(this.markerClassName)) {
@@ -41,10 +43,9 @@ $.extend(TweetsPlugin.prototype, {
       return;
     }
     target.addClass(this.markerClassName);
-    
     target.hide();
     var instance = {settings: $.extend({}, this._defaults)};
-		$.data(target[0], PROP_NAME, instance);
+    $.data(target[0], PROP_NAME, instance);
     this._fetchTwitterData(target, settings);
   },
   
@@ -54,11 +55,12 @@ $.extend(TweetsPlugin.prototype, {
   _fetchTwitterData: function(element, settings) {
     var instance = $.data(element[0], PROP_NAME);
     $.extend(instance.settings, settings);
+    this.requestUrl = this.api_method + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?';
     var self = this;
-    $.getJSON(this.api_method + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?',
-        function(data) {
-          self._buildMarkupFromData(element, data);
-        }
+    $.getJSON(this.requestUrl, function(data) {
+        self.responseData = data;
+        self._buildMarkupFromData(element, data);
+      }
     );
   },
   
@@ -73,7 +75,7 @@ $.extend(TweetsPlugin.prototype, {
        var text = item.text,
            text = self._autoLinkText(text),
            text = self._autoLinkUsernames(text),
-           timestamp = self._autoLinkTimestamp(item.id, item.created_at, item.user.screen_name);
+           timestamp = self._autoLinkTimestamp(item.id_str, item.created_at, item.user.screen_name);
    
        var created_at = $('<span />').addClass('created_at').text(timestamp);
        var tweetHtml = '<li>' + text + '<span class="created_at">' + timestamp + '</span></li>';
@@ -106,10 +108,10 @@ $.extend(TweetsPlugin.prototype, {
   },
   
   /* Build link back to tweet permalink from parts
-	   @param  status_id    (number) twitter status integer
-	   @param  date    (date) date when tweet was made
-	   @param  screen_name  (string) twitter username */
-  _autoLinkTimestamp: function(status_id, date, screen_name) {
+    @param  id_str       (string) twitter status ID string
+    @param  date         (date) date when tweet was made
+    @param  screen_name  (string) twitter username */
+  _autoLinkTimestamp: function(id_str, date, screen_name) {
     var d = new Date(date),
     dateString = [
               d.getMonth() + 1,
@@ -120,22 +122,22 @@ $.extend(TweetsPlugin.prototype, {
     var timestampUrl = [
                         this.baseUrl,
                         screen_name,
-                        'statuses',
-                        status_id
+                        'status',
+                        id_str,
                        ].join('/');
 
     return "<a href='" + timestampUrl + "'>" + dateString + "</a>";
   },
   
   /* Decide to either cycle or display tweets markup
-	   @param  element  (element) element containing tweets */
+    @param  element  (element) element containing tweets */
   _displayTweets: function(element) {
     var instance = $.data(element[0], PROP_NAME);
     instance.settings.cycle ? this._cycleTweets(element) : element.fadeIn();
   },
   
   /* Show one tweet for the animateDurection, then replace it with another
-	   @param  element  (element) element containing tweets */
+    @param  element  (element) element containing tweets */
   _cycleTweets: function(element) {
     var instance = $.data(element[0], PROP_NAME);
     element.show();

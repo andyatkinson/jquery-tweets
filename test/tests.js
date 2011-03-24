@@ -1,5 +1,5 @@
 function init(settings) {
-	return $('#testing').tweets(settings)
+  return $('#testing').tweets(settings);
 }
 
 $(function() {
@@ -10,6 +10,8 @@ $(function() {
     equal($.tweets._defaults.cycle, false, "do not cycle by default");
     equal($.tweets._defaults.count, 5, "show 5 tweets by default");
     equal($.tweets._defaults.animateDuration, 6000, "cycle tweet every 6 seconds");
+    equal($.tweets.api_method, "http://twitter.com/statuses/user_timeline/", "should equal API method");
+    equal($.tweets.requestUrl, "http://twitter.com/statuses/user_timeline/ev.json?count=5&callback=?", "should construct request URL");
   });
   
   test("hyperlinking tweet plain text", function() {
@@ -22,9 +24,16 @@ $(function() {
     equal($.tweets._autoLinkUsernames("tweeted by @webandy"),
           "tweeted by @<a href='http://twitter.com/webandy'>webandy</a>",
           "replace twitter usernames with hyperlinked text");
-    equal($.tweets._autoLinkTimestamp(22204851106, '08/26/2010', 'webandy'),
-          "<a href='http://twitter.com/webandy/statuses/22204851106'>8/26/2010</a>",
+    equal($.tweets._autoLinkTimestamp('50733650609836033', '08/26/2010', 'webandy'),
+          "<a href='http://twitter.com/webandy/status/50733650609836033'>8/26/2010</a>",
           "create formatted and hyperlinked text from timestamp");
+  });
+  
+  test("twitter API response data", function() {
+    init();
+    console.log($.tweets.responseData[0])
+    ok($.tweets.responseData[0].id_str, "should have an id_str property");
+    ok($.tweets.responseData[0].id_str.length === 17, "should be 17-chars in length");
   });
   
 });
