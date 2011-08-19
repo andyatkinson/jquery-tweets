@@ -14,7 +14,9 @@ function TweetsPlugin() {
     username: 'ev',
     cycle: false,
     count: 5,
-    animateDuration: 6000
+    animateDuration: 6000,
+    singleRandomTweet: false,
+    animate: true
   };
 }
 
@@ -58,7 +60,7 @@ $.extend(TweetsPlugin.prototype, {
     this.requestUrl = this.api_method + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?';
     var self = this;
     $.getJSON(this.requestUrl, function(data) {
-        self.responseData = data;
+        self.responseData = data; /* used by tests */
         self._buildMarkupFromData(element, data);
       }
     );
@@ -69,22 +71,36 @@ $.extend(TweetsPlugin.prototype, {
 	   @param  element    (element) the html element on the page
 	   @param  settings  (object) the custom options for this instance */
   _buildMarkupFromData: function(element, data) {
+    var instance = $.data(element[0], PROP_NAME);
     var self = this;
     var tweetsHTML = '';
-    $.each(data, function(i,item) {
-       var text = item.text,
-           text = self._autoLinkText(text),
-           text = self._autoLinkUsernames(text),
-           timestamp = self._autoLinkTimestamp(item.id_str, item.created_at, item.user.screen_name);
-   
-       var created_at = $('<span />').addClass('created_at').text(timestamp);
-       var tweetHtml = '<li>' + text + '<span class="created_at">' + timestamp + '</span></li>';
-
-       tweetsHTML += tweetHtml;
-    });
+    if (instance.settings.singleRandomTweet) {
+      var item = data[Math.floor(Math.random() * data.length)];
+      var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(item) + '</span></li>';
+      tweetsHTML += tweetHtml;
+    } else {
+      $.each(data, function(i,item) {
+        var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(item) + '</span></li>';
+        tweetsHTML += tweetHtml;
+      });
+    }
 
     $('<ul/>').html( tweetsHTML ).appendTo( element );
     this._displayTweets(element);
+  },
+  
+  _buildTweetText: function(item) {
+    var text = item.text;
+    var self = this;
+    text = self._autoLinkText(text);
+    text = self._autoLinkUsernames(text);
+    return text;
+  },
+  
+  _buildTweetTimestamp: function(item) {
+    var self = this;
+    var timestamp = self._autoLinkTimestamp(item.id_str, item.created_at, item.user.screen_name);
+    return timestamp;
   },
   
   /* Convert links to hyperlinked text
@@ -123,8 +139,8 @@ $.extend(TweetsPlugin.prototype, {
                         this.baseUrl,
                         screen_name,
                         'status',
-                        id_str,
-                       ].join('/');
+                        id_str
+                        ].join('/');
 
     return "<a href='" + timestampUrl + "'>" + dateString + "</a>";
   },
@@ -133,7 +149,14 @@ $.extend(TweetsPlugin.prototype, {
     @param  element  (element) element containing tweets */
   _displayTweets: function(element) {
     var instance = $.data(element[0], PROP_NAME);
-    instance.settings.cycle ? this._cycleTweets(element) : element.fadeIn();
+    var self = this;
+    if (instance.settings.animate && instance.settings.cycle) {
+      self._cycleTweets(element);
+    } else if (instance.settings.animate) {
+      element.fadeIn();
+    } else {
+      element.show();
+    }
   },
   
   /* Show one tweet for the animateDurection, then replace it with another
@@ -177,7 +200,7 @@ $.fn.tweets = function(options) {
   });
 };
 
-/* Initialise the tweets plugin functionality. */
+/* Initialize the tweets plugin */
 $.tweets = new TweetsPlugin(); // singleton instance
 
 })(jQuery);

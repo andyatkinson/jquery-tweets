@@ -10,6 +10,8 @@ $(function() {
     equal($.tweets._defaults.cycle, false, "do not cycle by default");
     equal($.tweets._defaults.count, 5, "show 5 tweets by default");
     equal($.tweets._defaults.animateDuration, 6000, "cycle tweet every 6 seconds");
+    equal($.tweets._defaults.singleRandomTweet, false, "should not show single random tweet by default");
+    equal($.tweets._defaults.animate, true, "use animation by default");
     equal($.tweets.api_method, "http://twitter.com/statuses/user_timeline/", "should equal API method");
     equal($.tweets.requestUrl, "http://twitter.com/statuses/user_timeline/ev.json?count=5&callback=?", "should construct request URL");
   });
@@ -31,7 +33,6 @@ $(function() {
   
   test("twitter API response data", function() {
     init();
-    console.log($.tweets.responseData[0])
     ok($.tweets.responseData[0].id_str, "should have an id_str property");
     ok($.tweets.responseData[0].id_str.length === 17, "should be 17-chars in length");
   });
