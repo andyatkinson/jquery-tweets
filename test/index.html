@@ -51,7 +51,6 @@
     </script>
   </div>
   
-  
   <div class='example'>
     <h1>Show one tweet at a time with animation, unstyled</h1>
     <div id='tweets2'></div>
@@ -68,6 +67,16 @@
     <script type="text/javascript">
       $(function() {
         $('#tweets3').tweets({username: 'webandy', count: 3});
+      });
+    </script>
+  </div>
+  
+  <div class='example'>
+    <h1>Show all tweets, without timestamps</h1>
+    <div id='tweets4'></div>
+    <script type="text/javascript">
+      $(function() {
+        $('#tweets4').tweets({username: 'ev', showTimestamps: false});
       });
     </script>
   </div>

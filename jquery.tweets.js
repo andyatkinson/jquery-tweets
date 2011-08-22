@@ -16,7 +16,8 @@ function TweetsPlugin() {
     count: 5,
     animateDuration: 6000,
     singleRandomTweet: false,
-    animate: true
+    animate: true,
+    showTimestamps: true
   };
 }
 
@@ -76,11 +77,11 @@ $.extend(TweetsPlugin.prototype, {
     var tweetsHTML = '';
     if (instance.settings.singleRandomTweet) {
       var item = data[Math.floor(Math.random() * data.length)];
-      var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(item) + '</span></li>';
+      var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(element, item) + '</span></li>';
       tweetsHTML += tweetHtml;
     } else {
       $.each(data, function(i,item) {
-        var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(item) + '</span></li>';
+        var tweetHtml = '<li>' + self._buildTweetText(item) + '<span class="created_at">' + self._buildTweetTimestamp(element, item) + '</span></li>';
         tweetsHTML += tweetHtml;
       });
     }
@@ -97,9 +98,13 @@ $.extend(TweetsPlugin.prototype, {
     return text;
   },
   
-  _buildTweetTimestamp: function(item) {
+  _buildTweetTimestamp: function(element, item) {
+    var instance = $.data(element[0], PROP_NAME);
     var self = this;
-    var timestamp = self._autoLinkTimestamp(item.id_str, item.created_at, item.user.screen_name);
+    var timestamp = "";
+    if (instance.settings.showTimestamps) {
+      timestamp = self._autoLinkTimestamp(item.id_str, item.created_at, item.user.screen_name);
+    }
     return timestamp;
   },
   
