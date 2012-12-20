@@ -13,8 +13,8 @@ $(function() {
     equal($.tweets._defaults.singleRandomTweet, false, "should not show single random tweet by default");
     equal($.tweets._defaults.animate, true, "use animation by default");
     equal($.tweets._defaults.showTimestamps, true, "show timestamps by default");
-    equal($.tweets.api_method, "http://twitter.com/statuses/user_timeline/", "should equal API method");
-    equal($.tweets.requestUrl, "http://twitter.com/statuses/user_timeline/ev.json?count=5&callback=?", "should construct request URL");
+    equal($.tweets.api_method, "https://api.twitter.com/1/statuses/user_timeline.json", "should equal API method");
+    equal($.tweets.requestUrl, "https://api.twitter.com/1/statuses/user_timeline.json?screen_name=ev&count=5&callback=?", "should construct request URL");
   });
   
   test("hyperlinking tweet plain text", function() {
