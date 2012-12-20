@@ -25,7 +25,7 @@ $.extend(TweetsPlugin.prototype, {
   
   markerClassName: 'hasTweetsPlugin',
   baseUrl: 'http://twitter.com',
-  api_method: 'http://twitter.com/statuses/user_timeline/',
+  api_method: 'https://api.twitter.com/1/statuses/user_timeline.json',
   urlRegex: /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/,
   usernameRegex: /(@)(\w+)/g,
   requestUrl: "",
@@ -58,7 +58,7 @@ $.extend(TweetsPlugin.prototype, {
   _fetchTwitterData: function(element, settings) {
     var instance = $.data(element[0], PROP_NAME);
     $.extend(instance.settings, settings);
-    this.requestUrl = this.api_method + instance.settings.username + '.json?count=' + instance.settings.count + '&callback=?';
+    this.requestUrl = this.api_method + '?screen_name=' + instance.settings.username + '&count=' + instance.settings.count + '&callback=?';
     var self = this;
     $.getJSON(this.requestUrl, function(data) {
         self.responseData = data; /* used by tests */
