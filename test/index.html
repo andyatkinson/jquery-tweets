@@ -14,9 +14,8 @@
 <body>
   <div id='announcement'>
     <h1>Plugin test and demonstration page</h1>
-    <h2><a href='http://github.com/webandy/jquery-tweets'>Plugin homepage</a></h2>
+    <h2><a href='http://github.com/andyatkinson/jquery-tweets'>Plugin homepage</a></h2>
     <h2><a href='http://plugins.jquery.com/project/webandy-jquery-tweets'>jQuery plugins directory page</a></h2>
-    <h3>Made by @<a href='http://twitter.com/webandy'>webandy</a></h3>
   </div>
   <h1 id="qunit-header">QUnit example</h1>
   <h2 id="qunit-banner"></h2>
@@ -33,7 +32,7 @@
   
   <script type="text/javascript">
     $(function() {
-      $('#tweets').tweets({username: 'webandy'});
+      $('#tweets').tweets({username: 'jQueryTweetsTes'});
     });
   </script>
   
@@ -46,7 +45,7 @@
     <div id='tweets1'></div>
     <script type="text/javascript">
       $(function() {
-        $('#tweets1').tweets({username: 'ev'});
+        $('#tweets1').tweets({username: 'jQueryTweetsTes'});
       });
     </script>
   </div>
@@ -56,17 +55,17 @@
     <div id='tweets2'></div>
     <script type="text/javascript">
       $(function() {
-        $('#tweets2').tweets({username: 'webandy', cycle: true});
+        $('#tweets2').tweets({username: 'jQueryTweetsTes', cycle: true});
       });
     </script>
   </div>
   
   <div class='example styled'>
-    <h1><a href='http://twitter.com/webandy'>Follow me</a> on twitter</h1>
+    <h1><a href='http://twitter.com/jQueryTweetsTes'>Follow me</a> on twitter</h1>
     <div id='tweets3'></div>
     <script type="text/javascript">
       $(function() {
-        $('#tweets3').tweets({username: 'webandy', count: 3});
+        $('#tweets3').tweets({username: 'jQueryTweetsTes', count: 3});
       });
     </script>
   </div>
@@ -76,7 +75,7 @@
     <div id='tweets4'></div>
     <script type="text/javascript">
       $(function() {
-        $('#tweets4').tweets({username: 'ev', showTimestamps: false});
+        $('#tweets4').tweets({username: 'jQueryTweetsTes', showTimestamps: false});
       });
     </script>
   </div>

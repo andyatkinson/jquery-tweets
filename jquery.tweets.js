@@ -1,5 +1,5 @@
 /**
-* 'jquery-tweets' Copyright (c) 2009 Andy Atkinson http://webandy.com
+* 'jquery-tweets' Copyright (c) 2009 Andy Atkinson
 * jquery-tweets is a jquery plugin that fetches a user's tweets (must have public tweets enabled) 
 * for display on a website.
 * 
@@ -25,7 +25,7 @@ $.extend(TweetsPlugin.prototype, {
   
   markerClassName: 'hasTweetsPlugin',
   baseUrl: 'http://twitter.com',
-  api_method: 'https://api.twitter.com/1/statuses/user_timeline.json',
+  api_method: 'https://api.twitter.com/1.1/statuses/user_timeline.json',
   urlRegex: /((ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?)/,
   usernameRegex: /(@)(\w+)/g,
   requestUrl: "",
@@ -62,6 +62,7 @@ $.extend(TweetsPlugin.prototype, {
     var self = this;
     $.getJSON(this.requestUrl, function(data) {
         self.responseData = data; /* used by tests */
+        console.log(self.responseData)
         self._buildMarkupFromData(element, data);
       }
     );

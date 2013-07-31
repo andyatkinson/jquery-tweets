@@ -24,11 +24,11 @@ $(function() {
     equal($.tweets._autoLinkText("you should visit http://twitter.com to see updates"),
           "you should visit <a href='http://twitter.com'>http://twitter.com</a> to see updates", 
           "replace links with hyperlinked text");
-    equal($.tweets._autoLinkUsernames("tweeted by @webandy"),
-          "tweeted by @<a href='http://twitter.com/webandy'>webandy</a>",
+    equal($.tweets._autoLinkUsernames("tweeted by @ev"),
+          "tweeted by @<a href='http://twitter.com/ev'>ev</a>",
           "replace twitter usernames with hyperlinked text");
-    equal($.tweets._autoLinkTimestamp('50733650609836033', '08/26/2010', 'webandy'),
-          "<a href='http://twitter.com/webandy/status/50733650609836033'>8/26/2010</a>",
+    equal($.tweets._autoLinkTimestamp('50733650609836033', '08/26/2010', 'ev'),
+          "<a href='http://twitter.com/ev/status/50733650609836033'>8/26/2010</a>",
           "create formatted and hyperlinked text from timestamp");
   });
   

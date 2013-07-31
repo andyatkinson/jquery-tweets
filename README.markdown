@@ -1,6 +1,18 @@
+UPDATE: July 2013
+============
+Twitter has deprecated the 1.0 API that this used in favor of the [1.1 REST API](https://dev.twitter.com/docs/api/1.1/get/statuses/user_timeline). Unfortunately this requires authentication via OAuth and I don't know how this can be done via client-side javascript.
+
+[This thread on twitters developer page documents the issue](https://dev.twitter.com/discussions/11564)
+
+[This fork of another twitter plugin generates a static file of an API response from a PHP script](https://github.com/StanScates/Tweet.js-Mod). Then the client side JS parts can still be used for presentation and style.
+
+Finally, Twitter themselves offer [embedded timelines](https://dev.twitter.com/docs/embedded-timelines) now which duplicate the functionality of this plugin, and offer limited customization options. Part of this plugin's goal was to offer extensive customization options not limited to colors, but also including behavior.
+
+
 jquery-tweets
 ===
 `jquery-tweets` displays tweets for a user with a public twitter account. No server code is necessary. Test coverage with QUnit covers some of the functionality of the plugin.
+
 
 Install
 ===
@@ -35,16 +47,6 @@ Options
 CSS
 ===
 CSS is up to you. Check the examples below to see some ways the tweets are styled. Check the example page to see other style examples. Have you put this plugin on your site and styled it? Send me a link!
-
-Examples
-===
-This script is used on the following websites. The usages are each styled individually.
-
-  1. [americas.org](http://americas.org) (originally developed for this site)
-  2. [my.trms.com](http://my.trms.com) (customer support website for Tightrope Media Systems)
-  3. [trainbrainapp.com](http://trainbrainapp.com) (iPhone app website)
-  
-Please send me a link to your site so I can add it to this list!
  
 Testing
 ===
@@ -59,7 +61,7 @@ This plugin had been added to the [jQuery plugins directory here](http://plugins
  
 MIT License
 ===
-Copyright (c) 2009 Andy Atkinson http://webandy.com
+Copyright (c) 2009 Andy Atkinson
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
