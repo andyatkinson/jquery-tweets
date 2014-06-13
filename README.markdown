@@ -1,5 +1,5 @@
-UPDATE: July 2013
-============
+### UPDATE: July 2013
+
 Twitter has deprecated the 1.0 API that this used in favor of the [1.1 REST API](https://dev.twitter.com/docs/api/1.1/get/statuses/user_timeline). Unfortunately this requires authentication via OAuth and I don't know how this can be done via client-side javascript.
 
 [This thread on twitters developer page documents the issue](https://dev.twitter.com/discussions/11564)
